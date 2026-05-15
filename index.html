@@ -421,10 +421,24 @@ body[data-page="app"] .app-page { display: block; }
   border-top: 1px solid rgba(127,234,244,0.1);
   padding-top: 10px;
   margin-top: 4px;
-  display: block;
+  display: none;
   white-space: pre-wrap;
   word-break: break-word;
 }
+.record-transcript.expanded { display: block; }
+
+/* Equalizer toggle button */
+.record-eq-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(37,212,200,0.07); border: 1px solid rgba(37,212,200,0.18);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.record-eq-btn:hover { background: rgba(37,212,200,0.18); }
+.record-eq-btn svg { width: 16px; height: 16px; }
+.record-eq-btn.active { background: rgba(37,212,200,0.22); border-color: var(--accent); }
+.record-eq-btn.active svg .eq-bar { fill: var(--accent); }
+.record-eq-btn svg .eq-bar { fill: rgba(127,234,244,0.75); transition: fill 0.2s; }
 .transcript-engine-badge {
   display: inline-block;
   font-size: 10px;
@@ -649,23 +663,103 @@ footer {
   letter-spacing: 0.05em;
   margin-bottom: 8px;
 }
-.modal-waveform {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  height: 36px;
-}
-.modal-wave-bar {
-  width: 3px;
-  border-radius: 2px;
-  background: rgba(37,212,200,0.4);
-  height: 8px;
-  transition: height 0.1s, opacity 0.1s;
-}
-.modal-wave-bar.active { background: var(--accent); }
 .modal-rec-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; margin-top: 6px; }
 .modal-rec-label.recording { color: #f47b7b; }
+
+/* ─── FULLSCREEN RECORDING SCREEN ──────────────────────── */
+.modal-overlay.rec-fullscreen {
+  padding: 0;
+  align-items: stretch;
+  background: #091f27;
+}
+.modal-overlay.rec-fullscreen .modal-box {
+  max-width: 100%; width: 100%; height: 100dvh;
+  border-radius: 0; border: none; margin: 0;
+  background: linear-gradient(170deg, #0c2f3a 0%, #0e3b46 45%, #0a2830 100%);
+  display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden;
+}
+.rec2-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 10px; flex-shrink: 0;
+}
+.rec2-icon-btn {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.rec2-icon-btn svg { width: 18px; height: 18px; fill: none; stroke: rgba(200,235,240,0.8); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rec2-rec-name {
+  font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 600;
+  color: var(--accent); text-align: center;
+  max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rec2-wave-wrap {
+  margin: 10px 18px 6px; flex-shrink: 0;
+  background: rgba(180,235,245,0.07);
+  border: 1px solid rgba(127,234,244,0.14);
+  border-radius: 14px; overflow: hidden;
+}
+.rec2-wave-wrap canvas { display: block; width: 100%; height: 88px; }
+.rec2-timer {
+  font-family: 'Unbounded', sans-serif; font-size: 48px; font-weight: 300;
+  color: #e8f8fa; letter-spacing: 0.04em; text-align: center;
+  padding: 12px 20px 2px; flex-shrink: 0;
+}
+.rec2-status {
+  text-align: center; font-size: 11px; color: rgba(180,230,235,0.45);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; flex-shrink: 0;
+}
+.rec2-status.recording { color: #f47b7b; }
+.rec2-transcript {
+  flex: 1; overflow-y: auto; margin: 0 18px 8px;
+  font-family: 'Onest', sans-serif; font-size: 16px; line-height: 1.65;
+  color: var(--text-primary);
+  background: rgba(0,0,0,0.18); border-radius: 14px;
+  padding: 14px 16px; border: 1px solid rgba(127,234,244,0.08);
+  min-height: 70px;
+}
+.rec2-transcript.empty::before {
+  content: 'Транскрипт появится здесь…';
+  color: rgba(180,230,235,0.28); font-style: italic; font-size: 14px;
+}
+.rec2-transcript .live-transcript-final { color: var(--accent); }
+.rec2-transcript .live-transcript-interim { color: rgba(180,230,235,0.55); font-style: italic; }
+.rec2-transcribing {
+  display: none; align-items: center; gap: 10px; justify-content: center;
+  padding: 8px 20px; color: var(--accent); font-size: 13px; flex-shrink: 0;
+}
+.rec2-transcribing.visible { display: flex; }
+.rec2-bottom {
+  display: flex; align-items: center; justify-content: center;
+  gap: 28px; padding: 14px 20px 36px; flex-shrink: 0;
+}
+.rec2-side-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.11);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background 0.18s;
+}
+.rec2-side-btn:hover { background: rgba(255,255,255,0.12); }
+.rec2-side-btn svg { width: 20px; height: 20px; fill: none; stroke: rgba(180,230,235,0.65); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rec2-main-btn {
+  width: 78px; height: 78px; border-radius: 50%; border: none;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: 0 6px 32px rgba(37,212,200,0.48);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+.rec2-main-btn:hover { transform: scale(1.06); box-shadow: 0 8px 38px rgba(37,212,200,0.58); }
+.rec2-main-btn:disabled { background: rgba(37,212,200,0.3); box-shadow: none; cursor: default; transform: none; }
+.rec2-main-btn svg { width: 28px; height: 28px; }
+.rec2-main-btn.paused { background: rgba(37,212,200,0.55); box-shadow: 0 6px 24px rgba(37,212,200,0.28); }
+.rec2-finish-btn {
+  display: block; margin: 0 auto 4px; flex-shrink: 0;
+  background: rgba(37,212,200,0.08); border: 1px solid rgba(37,212,200,0.22);
+  border-radius: 20px; padding: 8px 32px;
+  font-family: 'Onest', sans-serif; font-size: 14px; font-weight: 500;
+  color: var(--accent); cursor: pointer; transition: all 0.18s; letter-spacing: 0.02em;
+}
+.rec2-finish-btn:hover { background: rgba(37,212,200,0.18); border-color: rgba(37,212,200,0.4); }
 
 .modal-actions { display: flex; gap: 10px; margin-top: 4px; }
 .modal-btn {
@@ -788,6 +882,109 @@ footer {
 .folder-back-btn:hover { background: rgba(37,212,200,0.18); }
 .folder-back-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .folder-current-name { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 600; color: #e8f8fa; }
+
+/* ─── AUDIO EDITOR MODAL ─────────────────────────────────── */
+.editor-modal-box {
+  max-width: 720px;
+  width: calc(100% - 32px);
+}
+.editor-wave-wrap {
+  position: relative;
+  background: rgba(8,28,31,0.6);
+  border: 1px solid rgba(37,212,200,0.18);
+  border-radius: 12px;
+  padding: 14px 12px 18px;
+  margin-bottom: 14px;
+  user-select: none;
+}
+#editorCanvas {
+  display: block;
+  width: 100%;
+  height: 140px;
+  cursor: crosshair;
+}
+.editor-selection {
+  position: absolute;
+  top: 14px; bottom: 18px;
+  background: rgba(244,123,123,0.18);
+  border-left: 2px solid #f47b7b;
+  border-right: 2px solid #f47b7b;
+  pointer-events: none;
+}
+.editor-handle {
+  position: absolute;
+  top: 14px; bottom: 18px;
+  width: 14px;
+  margin-left: -7px;
+  cursor: ew-resize;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editor-handle::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 6px;
+  width: 2px;
+  background: #f47b7b;
+  box-shadow: 0 0 8px rgba(244,123,123,0.7);
+}
+.editor-handle::after {
+  content: '';
+  width: 10px; height: 10px;
+  background: #f47b7b;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(244,123,123,0.7);
+}
+.editor-playhead {
+  position: absolute;
+  top: 14px; bottom: 18px;
+  width: 2px;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 3;
+  box-shadow: 0 0 8px rgba(37,212,200,0.8);
+  display: none;
+}
+.editor-info {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-secondary);
+  margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+}
+.editor-info b { color: var(--text-primary); font-weight: 500; }
+.editor-info .sel-info { color: #f47b7b; }
+.editor-controls {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;
+  justify-content: center;
+}
+.editor-ctrl-btn {
+  font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 10px 18px; border-radius: 8px;
+  background: rgba(37,212,200,0.08);
+  border: 1px solid rgba(37,212,200,0.22);
+  color: var(--text-primary);
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.editor-ctrl-btn:hover { background: rgba(37,212,200,0.16); border-color: var(--accent); }
+.editor-ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.editor-ctrl-btn svg { width: 14px; height: 14px; }
+.editor-ctrl-btn.cut { background: rgba(244,123,123,0.1); border-color: rgba(244,123,123,0.3); color: #f8b0b0; }
+.editor-ctrl-btn.cut:hover:not(:disabled) { background: rgba(244,123,123,0.2); border-color: #f47b7b; }
+.editor-loading {
+  text-align: center; color: var(--text-secondary); font-size: 13px;
+  padding: 40px 0;
+}
+.record-edit-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(37,212,200,0.07); border: 1px solid rgba(37,212,200,0.18);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.record-edit-btn:hover { background: rgba(37,212,200,0.18); border-color: var(--accent); }
+.record-edit-btn svg { width: 14px; height: 14px; stroke: rgba(127,234,244,0.85); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Folder button on record card */
 .record-folder-btn {
@@ -1119,23 +1316,102 @@ footer {
     </div>
 
     <div id="modalStep2" style="display:none;">
-      <div class="modal-rec-status">
-        <div class="modal-rec-timer" id="modalTimer">00:00</div>
-        <div class="modal-waveform" id="modalWaveform"></div>
-        <div class="modal-rec-label" id="modalRecLabel">Готов к записи</div>
+      <div class="rec2-topbar">
+        <button class="rec2-icon-btn" id="modalDiscardBtn" title="Удалить и выйти">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+        <span class="rec2-rec-name" id="rec2NameLabel">Запись</span>
+        <div style="width:42px;"></div>
       </div>
 
-      <div class="live-transcript-box empty" id="liveTranscriptBox"></div>
+      <div class="rec2-wave-wrap">
+        <canvas id="recWaveCanvas" height="88"></canvas>
+      </div>
 
-      <div class="modal-transcribing" id="modalTranscribing">
+      <div class="rec2-timer" id="modalTimer">00:00.00</div>
+      <div class="rec2-status recording" id="modalRecLabel">Запись</div>
+
+      <div class="rec2-transcript empty" id="liveTranscriptBox" style="display:none;"></div>
+
+      <div class="rec2-transcribing" id="modalTranscribing">
         <div class="transcribing-spinner"></div>
         <span>Транскрибирую запись…</span>
       </div>
 
+      <button class="rec2-finish-btn" id="modalFinishBtn">Завершить запись</button>
+
+      <div class="rec2-bottom">
+        <button class="rec2-side-btn" title="В избранное">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <button class="rec2-main-btn" id="modalStopBtn" title="Приостановить запись">
+          <svg viewBox="0 0 24 24" fill="#0a2830" stroke="none">
+            <rect x="6" y="4" width="4" height="16" rx="1"/>
+            <rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+        </button>
+        <button class="rec2-main-btn" id="modalSaveBtn" style="display:none;" title="Сохранить">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a2830" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+        <button class="rec2-side-btn" id="recEqBtn" title="Показать транскрипт">
+          <span id="recEqIconA" style="font-family:'Onest',sans-serif;font-size:17px;font-weight:600;color:rgba(180,230,235,0.65);line-height:1;">A</span>
+          <svg id="recEqIconBars" viewBox="0 0 24 24" style="display:none;"><line x1="4" y1="13" x2="4" y2="19"/><line x1="8" y1="9" x2="8" y2="19"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="16" y1="9" x2="16" y2="19"/><line x1="20" y1="13" x2="20" y2="19"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ AUDIO EDITOR MODAL ══════════ -->
+<div class="modal-overlay" id="editorModal">
+  <div class="modal-box editor-modal-box">
+    <div class="modal-title">
+      <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+      Редактирование записи
+    </div>
+
+    <div id="editorLoading" class="editor-loading">Загрузка аудио…</div>
+
+    <div id="editorContent" style="display:none;">
+      <div class="editor-wave-wrap" id="editorWaveWrap">
+        <canvas id="editorCanvas"></canvas>
+        <div class="editor-selection" id="editorSelection"></div>
+        <div class="editor-handle" id="editorHandleStart" data-handle="start"></div>
+        <div class="editor-handle" id="editorHandleEnd" data-handle="end"></div>
+        <div class="editor-playhead" id="editorPlayhead"></div>
+      </div>
+
+      <div class="editor-info">
+        <span>Длительность: <b id="editorDuration">0:00</b></span>
+        <span class="sel-info">Выделено: <b id="editorSelLen">0:00</b> (<span id="editorSelRange">0:00 – 0:00</span>)</span>
+      </div>
+
+      <div class="editor-controls">
+        <button class="editor-ctrl-btn" id="editorPlayBtn" title="Воспроизвести / стоп">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="editorPlayLabel">Прослушать</span>
+        </button>
+        <button class="editor-ctrl-btn" id="editorPlaySelBtn" title="Прослушать выделенное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Прослушать выделение
+        </button>
+        <button class="editor-ctrl-btn cut" id="editorCutBtn" title="Вырезать выделение">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          Вырезать
+        </button>
+        <button class="editor-ctrl-btn" id="editorUndoBtn" title="Отменить последнее действие" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+          Отменить
+        </button>
+        <button class="editor-ctrl-btn" id="editorResetBtn" title="Вернуть оригинал">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Сбросить
+        </button>
+      </div>
+
       <div class="modal-actions">
-        <button class="modal-btn danger" id="modalDiscardBtn">Удалить</button>
-        <button class="modal-btn primary" id="modalStopBtn">Остановить</button>
-        <button class="modal-btn primary" id="modalSaveBtn" style="display:none;">Сохранить</button>
+        <button class="modal-btn secondary" id="editorCancelBtn">Отмена</button>
+        <button class="modal-btn primary" id="editorSaveBtn">Сохранить</button>
       </div>
     </div>
   </div>
@@ -1700,6 +1976,8 @@ function createRecordCard(rec, idx) {
       <div class="record-right">
         ${rec.duration ? `<span class="record-duration">${formatDuration(rec.duration)}</span>` : ''}
         ${hasAudio ? `<button class="record-play" aria-label="Воспроизвести"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>` : ''}
+        ${hasAudio ? `<button class="record-edit-btn" aria-label="Редактировать" title="Редактировать запись"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></button>` : ''}
+        ${hasTranscript ? `<button class="record-eq-btn" aria-label="Транскрипт" title="Показать/скрыть транскрипт"><span class="eq-btn-icon-a" style="font-family:'Onest',sans-serif;font-size:15px;font-weight:600;color:rgba(127,234,244,0.75);line-height:1;">A</span><svg class="eq-btn-icon-bars" viewBox="0 0 20 16" xmlns="http://www.w3.org/2000/svg" style="display:none;"><rect class="eq-bar" x="0" y="4" width="3" height="8" rx="1.5"/><rect class="eq-bar" x="4.25" y="0" width="3" height="16" rx="1.5"/><rect class="eq-bar" x="8.5" y="5" width="3" height="6" rx="1.5"/><rect class="eq-bar" x="12.75" y="2" width="3" height="12" rx="1.5"/><rect class="eq-bar" x="17" y="6" width="3" height="4" rx="1.5"/></svg></button>` : ''}
         <button class="record-folder-btn${rec.folderId ? ' in-folder' : ''}" aria-label="Папка" title="Переместить в папку">
           <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         </button>
@@ -1733,11 +2011,35 @@ function createRecordCard(rec, idx) {
   // Delete -> move to trash
   card.querySelector('.record-delete').addEventListener('click', () => moveToTrash(rec.id));
 
+  // Edit (audio trimmer)
+  const editBtn = card.querySelector('.record-edit-btn');
+  if (editBtn) {
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openAudioEditor(rec.id);
+    });
+  }
+
   // Folder button -> open picker
   card.querySelector('.record-folder-btn').addEventListener('click', (e) => {
     e.stopPropagation();
     openFolderPicker(rec.id);
   });
+
+  // Equalizer button -> toggle transcript
+  const eqBtn = card.querySelector('.record-eq-btn');
+  if (eqBtn) {
+    const transcriptDiv = card.querySelector('.record-transcript');
+    const iconA = eqBtn.querySelector('.eq-btn-icon-a');
+    const iconBars = eqBtn.querySelector('.eq-btn-icon-bars');
+    eqBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = transcriptDiv.classList.toggle('expanded');
+      eqBtn.classList.toggle('active', expanded);
+      if (iconA) iconA.style.display = expanded ? 'none' : '';
+      if (iconBars) iconBars.style.display = expanded ? '' : 'none';
+    });
+  }
 
   // Play
   if (hasAudio) {
@@ -1985,10 +2287,48 @@ const modalWaveformEl = document.getElementById('modalWaveform');
 const yandexKeyField = document.getElementById('yandexKeyField');
 const yandexKeyInput = document.getElementById('yandexKeyInput');
 
-const mwBars = [];
-for (let i=0; i<18; i++) {
-  const b=document.createElement('div'); b.className='modal-wave-bar';
-  modalWaveformEl.appendChild(b); mwBars.push(b);
+// canvas-based waveform — no static bars needed
+function drawRecCanvas(analyser) {
+  const canvas = document.getElementById('recWaveCanvas');
+  if (!canvas) return;
+  const W = canvas.offsetWidth || canvas.width;
+  const H = canvas.offsetHeight || canvas.height;
+  if (canvas.width !== W) canvas.width = W;
+  if (canvas.height !== H) canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  const BAR_COUNT = 50;
+  const BAR_W = Math.max(2, Math.floor(W / (BAR_COUNT * 1.8)));
+  const GAP = Math.floor(W / BAR_COUNT) - BAR_W;
+  const totalW = BAR_COUNT * (BAR_W + GAP) - GAP;
+  const startX = (W - totalW) / 2;
+  if (analyser) {
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const idx = Math.floor(i * data.length / BAR_COUNT);
+      const v = data[idx] / 255;
+      const h = Math.max(4, v * H * 0.88);
+      const x = startX + i * (BAR_W + GAP);
+      const y = (H - h) / 2;
+      ctx.fillStyle = v > 0.04 ? `rgba(37,212,200,${0.55 + v * 0.45})` : 'rgba(37,212,200,0.2)';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x, y, BAR_W, h, Math.min(2, BAR_W / 2));
+      else ctx.rect(x, y, BAR_W, h);
+      ctx.fill();
+    }
+  } else {
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const h = 4;
+      const x = startX + i * (BAR_W + GAP);
+      const y = (H - h) / 2;
+      ctx.fillStyle = 'rgba(37,212,200,0.18)';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x, y, BAR_W, h, 1);
+      else ctx.rect(x, y, BAR_W, h);
+      ctx.fill();
+    }
+  }
 }
 
 document.querySelectorAll('input[name="transcMethod"]').forEach(r => {
@@ -2013,23 +2353,21 @@ let mediaRecorder = null;
 let audioChunks = [];
 let recInterval = null;
 let recSeconds = 0;
+let recStartTime = 0;
+let totalPausedMs = 0;
+let pauseStart = 0;
+let recIsPaused = false;
 let browserRecognition = null;
 let liveTranscript = '';
 let mwAnimFrame = null;
 let analyserNode = null;
 let audioCtx = null;
 
-function updateModalTimer(s) {
-  const m=Math.floor(s/60).toString().padStart(2,'0');
-  const sec=(s%60).toString().padStart(2,'0');
-  modalTimer.textContent=`${m}:${sec}`;
-}
-
 function animateModalWave(active, stream) {
   if (!active) {
-    mwBars.forEach(b=>{b.style.height='8px';b.classList.remove('active');});
-    if (mwAnimFrame) cancelAnimationFrame(mwAnimFrame);
-    if (audioCtx) { audioCtx.close(); audioCtx=null; analyserNode=null; }
+    if (mwAnimFrame) { cancelAnimationFrame(mwAnimFrame); mwAnimFrame = null; }
+    if (audioCtx) { audioCtx.close(); audioCtx = null; analyserNode = null; }
+    drawRecCanvas(null);
     return;
   }
   if (stream) {
@@ -2037,22 +2375,22 @@ function animateModalWave(active, stream) {
       audioCtx = new AudioContext();
       const src = audioCtx.createMediaStreamSource(stream);
       analyserNode = audioCtx.createAnalyser();
-      analyserNode.fftSize = 64;
+      analyserNode.fftSize = 128;
+      analyserNode.smoothingTimeConstant = 0.75;
       src.connect(analyserNode);
     } catch(e) {}
   }
   function draw() {
-    if (analyserNode) {
-      const data = new Uint8Array(analyserNode.frequencyBinCount);
-      analyserNode.getByteFrequencyData(data);
-      mwBars.forEach((b,i)=>{
-        const v = data[i % data.length];
-        const h = 4 + (v/255)*28;
-        b.style.height=h+'px'; b.classList.add('active');
-      });
-    } else {
-      mwBars.forEach(b=>{ const h=4+Math.random()*24; b.style.height=h+'px'; b.classList.add('active'); });
+    // Update centisecond timer (exclude any paused time)
+    if (recStartTime > 0 && modalTimer) {
+      const ms = Date.now() - recStartTime - totalPausedMs;
+      const m = Math.floor(ms / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      const cs = Math.floor((ms % 1000) / 10);
+      modalTimer.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}.${cs.toString().padStart(2,'0')}`;
+      recSeconds = Math.floor(ms / 1000);
     }
+    drawRecCanvas(analyserNode);
     mwAnimFrame = requestAnimationFrame(draw);
   }
   draw();
@@ -2069,8 +2407,12 @@ document.getElementById('modalStartBtn')?.addEventListener('click', async () => 
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    // Set recording name in screen header
+    const nameLabel = document.getElementById('rec2NameLabel');
+    if (nameLabel) nameLabel.textContent = name;
     modalStep1.style.display='none'; modalStep2.style.display='';
-    modalRecLabel.textContent='Запись…'; modalRecLabel.className='modal-rec-label recording';
+    recordModal.classList.add('rec-fullscreen');
+    modalRecLabel.textContent='Запись'; modalRecLabel.className='rec2-status recording';
     document.getElementById('modalStopBtn').style.display='';
     document.getElementById('modalSaveBtn').style.display='none';
 
@@ -2085,9 +2427,10 @@ document.getElementById('modalStartBtn')?.addEventListener('click', async () => 
     if (liveBox) { liveBox.innerHTML = ''; liveBox.classList.add('empty'); }
 
     mediaRecorder.ondataavailable = e => { if (e.data.size>0) audioChunks.push(e.data); };
-    mediaRecorder.start(250);
+    mediaRecorder.start();
 
-    recInterval = setInterval(() => { recSeconds++; updateModalTimer(recSeconds); }, 1000);
+    recStartTime = Date.now();
+    recSeconds = 0;
     animateModalWave(true, stream);
 
     if (method === 'browser') {
@@ -2097,6 +2440,7 @@ document.getElementById('modalStartBtn')?.addEventListener('click', async () => 
         browserRecognition.lang = 'ru-RU';
         browserRecognition.continuous = true;
         browserRecognition.interimResults = true;
+        browserRecognition.maxAlternatives = 1;
         browserRecognition.onresult = e => {
           let newFinal = '', interim = '';
           for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -2143,9 +2487,40 @@ document.getElementById('modalStartBtn')?.addEventListener('click', async () => 
   }
 });
 
-document.getElementById('modalStopBtn')?.addEventListener('click', async () => {
+// Pause / Resume button
+document.getElementById('modalStopBtn')?.addEventListener('click', () => {
   if (!mediaRecorder || mediaRecorder.state === 'inactive') return;
-  clearInterval(recInterval);
+  const btn = document.getElementById('modalStopBtn');
+  if (!recIsPaused) {
+    // → Pause
+    try { mediaRecorder.pause(); } catch(e) {}
+    pauseStart = Date.now();
+    recIsPaused = true;
+    if (mwAnimFrame) { cancelAnimationFrame(mwAnimFrame); mwAnimFrame = null; }
+    drawRecCanvas(null);
+    btn.classList.add('paused');
+    btn.title = 'Продолжить запись';
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="#0a2830" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+    modalRecLabel.textContent = 'Пауза';
+    modalRecLabel.className = 'rec2-status';
+  } else {
+    // → Resume
+    try { mediaRecorder.resume(); } catch(e) {}
+    totalPausedMs += Date.now() - pauseStart;
+    pauseStart = 0;
+    recIsPaused = false;
+    animateModalWave(true, mediaRecorder._stream);
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="#0a2830" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
+    modalRecLabel.textContent = 'Запись';
+    modalRecLabel.className = 'rec2-status recording';
+  }
+});
+
+// Finish (save) button — stops recording and saves
+document.getElementById('modalFinishBtn')?.addEventListener('click', async () => {
+  if (!mediaRecorder || mediaRecorder.state === 'inactive') return;
+  // If paused, account for that pause period before stopping
+  if (recIsPaused) { totalPausedMs += Date.now() - pauseStart; recIsPaused = false; }
   animateModalWave(false);
   if (browserRecognition) { try { browserRecognition.stop(); } catch(e){} browserRecognition=null; }
 
@@ -2156,8 +2531,9 @@ document.getElementById('modalStopBtn')?.addEventListener('click', async () => {
   const duration = recSeconds;
 
   modalRecLabel.textContent = 'Обработка…';
-  modalRecLabel.className = 'modal-rec-label';
+  modalRecLabel.className = 'rec2-status';
   document.getElementById('modalStopBtn').style.display='none';
+  document.getElementById('modalFinishBtn').style.display='none';
 
   await new Promise(resolve => {
     mediaRecorder.onstop = resolve;
@@ -2194,7 +2570,14 @@ function saveAndClose(name, method, duration, audioBase64, transcript) {
   saveRecords(recs);
   renderRecordsList();
   recordModal.classList.remove('open');
+  recordModal.classList.remove('rec-fullscreen');
+  recStartTime = 0; totalPausedMs = 0; pauseStart = 0; recIsPaused = false;
+  const stopBtn = document.getElementById('modalStopBtn');
+  if (stopBtn) { stopBtn.style.display=''; stopBtn.classList.remove('paused'); stopBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="#0a2830" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`; }
+  const finBtn = document.getElementById('modalFinishBtn');
+  if (finBtn) finBtn.style.display='';
   modalStep1.style.display=''; modalStep2.style.display='none';
+  resetRecEqBtn();
   showToast('Запись «'+name+'» сохранена ✓');
 }
 
@@ -2203,12 +2586,18 @@ document.getElementById('modalDiscardBtn')?.addEventListener('click', () => {
     mediaRecorder.stop();
     mediaRecorder._stream?.getTracks().forEach(t=>t.stop());
   }
-  clearInterval(recInterval);
   animateModalWave(false);
   if (browserRecognition) { try { browserRecognition.stop(); } catch(e){} browserRecognition=null; }
   mediaRecorder = null; audioChunks = [];
+  recStartTime = 0; totalPausedMs = 0; pauseStart = 0; recIsPaused = false;
+  const stopBtn = document.getElementById('modalStopBtn');
+  if (stopBtn) { stopBtn.style.display=''; stopBtn.classList.remove('paused'); stopBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="#0a2830" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`; }
+  const finBtn = document.getElementById('modalFinishBtn');
+  if (finBtn) finBtn.style.display='';
   recordModal.classList.remove('open');
+  recordModal.classList.remove('rec-fullscreen');
   modalStep1.style.display=''; modalStep2.style.display='none';
+  resetRecEqBtn();
 });
 
 function blobToBase64(blob) {
@@ -2284,6 +2673,40 @@ function blobToBase64RAW(blob) {
   });
 }
 
+// ── Reset equalizer button to default state ───────────────
+function resetRecEqBtn() {
+  const waveWrap = document.querySelector('.rec2-wave-wrap');
+  const transcriptBox = document.getElementById('liveTranscriptBox');
+  const iconA = document.getElementById('recEqIconA');
+  const iconBars = document.getElementById('recEqIconBars');
+  if (transcriptBox) transcriptBox.style.display = 'none';
+  if (waveWrap) waveWrap.style.display = '';
+  if (iconA) iconA.style.display = '';
+  if (iconBars) iconBars.style.display = 'none';
+}
+
+// ── Recording modal equalizer button ─────────────────────
+document.getElementById('recEqBtn')?.addEventListener('click', () => {
+  const waveWrap = document.querySelector('.rec2-wave-wrap');
+  const transcriptBox = document.getElementById('liveTranscriptBox');
+  const iconA = document.getElementById('recEqIconA');
+  const iconBars = document.getElementById('recEqIconBars');
+  if (!transcriptBox) return;
+  const showing = transcriptBox.style.display !== 'none' && !transcriptBox.hidden;
+  // Toggle: if transcript visible → hide it (show wave, icon=bars), else show transcript (hide wave, icon=A)
+  if (showing) {
+    transcriptBox.style.display = 'none';
+    if (waveWrap) waveWrap.style.display = '';
+    if (iconA) iconA.style.display = 'none';
+    if (iconBars) iconBars.style.display = '';
+  } else {
+    transcriptBox.style.display = '';
+    if (waveWrap) waveWrap.style.display = 'none';
+    if (iconA) iconA.style.display = '';
+    if (iconBars) iconBars.style.display = 'none';
+  }
+});
+
 // ── Settings modal ────────────────────────────────────────
 document.getElementById('settingsBtn')?.addEventListener('click', () => {
   document.getElementById('settingsYandexKey').value = localStorage.getItem(YANDEX_KEY_STORE)||'';
@@ -2310,6 +2733,383 @@ document.getElementById('recordModal')?.addEventListener('click', e => {
 });
 document.getElementById('settingsModal')?.addEventListener('click', e => {
   if (e.target === document.getElementById('settingsModal')) document.getElementById('settingsModal').classList.remove('open');
+});
+// ══════════ AUDIO EDITOR ══════════════════════════════════
+const editorModal = document.getElementById('editorModal');
+let editorState = null;
+// editorState = { recId, buffer, originalBuffer, history: [AudioBuffer], selStart, selEnd, isPlaying, source, audioCtx, playStartTime, playFrom, animFrame, playSelectionOnly }
+
+async function openAudioEditor(recId) {
+  const recs = loadRecords();
+  const rec = recs.find(r => r.id === recId);
+  if (!rec || !rec.audioBase64) { showToast('Аудио недоступно', 'error'); return; }
+
+  document.getElementById('editorLoading').style.display = '';
+  document.getElementById('editorContent').style.display = 'none';
+  editorModal.classList.add('open');
+
+  try {
+    const resp = await fetch(rec.audioBase64);
+    const arrayBuf = await resp.arrayBuffer();
+    const ctx = new AudioContext();
+    const buffer = await ctx.decodeAudioData(arrayBuf);
+
+    editorState = {
+      recId,
+      audioCtx: ctx,
+      originalBuffer: buffer,
+      buffer,
+      history: [],
+      selStart: 0,
+      selEnd: buffer.duration,
+      isPlaying: false,
+      source: null,
+      animFrame: null,
+      playFrom: 0,
+      playStartTime: 0,
+      playSelectionOnly: false,
+    };
+
+    document.getElementById('editorLoading').style.display = 'none';
+    document.getElementById('editorContent').style.display = '';
+    drawEditorWave();
+    updateEditorSelection();
+    updateEditorInfo();
+  } catch(e) {
+    showToast('Не удалось декодировать аудио: '+e.message, 'error');
+    editorModal.classList.remove('open');
+  }
+}
+
+function drawEditorWave() {
+  const canvas = document.getElementById('editorCanvas');
+  if (!canvas || !editorState) return;
+  const wrap = document.getElementById('editorWaveWrap');
+  const W = wrap.clientWidth - 24;
+  const H = 140;
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  const buf = editorState.buffer;
+  const data = buf.getChannelData(0);
+  const step = Math.max(1, Math.floor(data.length / W));
+  const mid = H / 2;
+
+  ctx.fillStyle = 'rgba(37,212,200,0.65)';
+  for (let x = 0; x < W; x++) {
+    const start = x * step;
+    let min = 1, max = -1;
+    const end = Math.min(start + step, data.length);
+    for (let i = start; i < end; i++) {
+      const v = data[i];
+      if (v < min) min = v;
+      if (v > max) max = v;
+    }
+    const y1 = mid + min * mid * 0.92;
+    const y2 = mid + max * mid * 0.92;
+    ctx.fillRect(x, y1, 1, Math.max(1, y2 - y1));
+  }
+  // baseline
+  ctx.fillStyle = 'rgba(37,212,200,0.15)';
+  ctx.fillRect(0, mid - 0.5, W, 1);
+}
+
+function timeToX(t) {
+  const canvas = document.getElementById('editorCanvas');
+  if (!canvas || !editorState) return 0;
+  return (t / editorState.buffer.duration) * canvas.width;
+}
+function xToTime(x) {
+  const canvas = document.getElementById('editorCanvas');
+  if (!canvas || !editorState) return 0;
+  const t = (x / canvas.width) * editorState.buffer.duration;
+  return Math.max(0, Math.min(editorState.buffer.duration, t));
+}
+
+function updateEditorSelection() {
+  if (!editorState) return;
+  const canvas = document.getElementById('editorCanvas');
+  const wrap = document.getElementById('editorWaveWrap');
+  const sel = document.getElementById('editorSelection');
+  const hS = document.getElementById('editorHandleStart');
+  const hE = document.getElementById('editorHandleEnd');
+  // canvas inside wrap has left padding 12
+  const padLeft = 12;
+  const xS = timeToX(editorState.selStart) + padLeft;
+  const xE = timeToX(editorState.selEnd) + padLeft;
+  sel.style.left = xS + 'px';
+  sel.style.width = Math.max(0, xE - xS) + 'px';
+  hS.style.left = xS + 'px';
+  hE.style.left = xE + 'px';
+}
+
+function fmtTime(t) {
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function updateEditorInfo() {
+  if (!editorState) return;
+  document.getElementById('editorDuration').textContent = fmtTime(editorState.buffer.duration);
+  const selLen = Math.max(0, editorState.selEnd - editorState.selStart);
+  document.getElementById('editorSelLen').textContent = fmtTime(selLen);
+  document.getElementById('editorSelRange').textContent = `${fmtTime(editorState.selStart)} – ${fmtTime(editorState.selEnd)}`;
+  document.getElementById('editorUndoBtn').disabled = editorState.history.length === 0;
+  document.getElementById('editorCutBtn').disabled = selLen < 0.05 || selLen >= editorState.buffer.duration - 0.05;
+}
+
+// ── Drag handles ────────────────────────────────────────
+(function() {
+  let dragging = null; // 'start' | 'end' | 'new'
+  let dragStartX = 0;
+  let dragStartT = 0;
+  const wrap = document.getElementById('editorWaveWrap');
+  const canvas = document.getElementById('editorCanvas');
+
+  function clientXToCanvasX(clientX) {
+    const rect = canvas.getBoundingClientRect();
+    return Math.max(0, Math.min(canvas.width, clientX - rect.left));
+  }
+
+  document.querySelectorAll('.editor-handle').forEach(h => {
+    h.addEventListener('mousedown', e => {
+      e.preventDefault();
+      dragging = h.dataset.handle;
+    });
+    h.addEventListener('touchstart', e => {
+      dragging = h.dataset.handle;
+    }, {passive: true});
+  });
+
+  canvas.addEventListener('mousedown', e => {
+    if (!editorState) return;
+    const x = clientXToCanvasX(e.clientX);
+    const t = xToTime(x);
+    editorState.selStart = t;
+    editorState.selEnd = t;
+    dragging = 'new';
+    dragStartT = t;
+    updateEditorSelection();
+    updateEditorInfo();
+  });
+
+  function onMove(clientX) {
+    if (!dragging || !editorState) return;
+    const x = clientXToCanvasX(clientX);
+    const t = xToTime(x);
+    if (dragging === 'start') {
+      editorState.selStart = Math.min(t, editorState.selEnd);
+    } else if (dragging === 'end') {
+      editorState.selEnd = Math.max(t, editorState.selStart);
+    } else if (dragging === 'new') {
+      if (t < dragStartT) { editorState.selStart = t; editorState.selEnd = dragStartT; }
+      else { editorState.selStart = dragStartT; editorState.selEnd = t; }
+    }
+    updateEditorSelection();
+    updateEditorInfo();
+  }
+
+  document.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+  document.addEventListener('mouseup', () => { dragging = null; });
+  document.addEventListener('touchmove', e => { if (dragging && e.touches[0]) onMove(e.touches[0].clientX); }, {passive: true});
+  document.addEventListener('touchend', () => { dragging = null; });
+})();
+
+// ── Cut selection ──────────────────────────────────────
+document.getElementById('editorCutBtn')?.addEventListener('click', () => {
+  if (!editorState) return;
+  stopEditorPlayback();
+  const buf = editorState.buffer;
+  const sr = buf.sampleRate;
+  const startSample = Math.floor(editorState.selStart * sr);
+  const endSample = Math.floor(editorState.selEnd * sr);
+  const cutLen = endSample - startSample;
+  if (cutLen <= 0) return;
+  const newLen = buf.length - cutLen;
+  if (newLen <= 0) { showToast('Нельзя вырезать всю запись', 'error'); return; }
+
+  const newBuf = editorState.audioCtx.createBuffer(buf.numberOfChannels, newLen, sr);
+  for (let ch = 0; ch < buf.numberOfChannels; ch++) {
+    const src = buf.getChannelData(ch);
+    const dst = newBuf.getChannelData(ch);
+    dst.set(src.subarray(0, startSample), 0);
+    dst.set(src.subarray(endSample), startSample);
+  }
+  editorState.history.push(editorState.buffer);
+  editorState.buffer = newBuf;
+  editorState.selStart = Math.min(editorState.selStart, newBuf.duration);
+  editorState.selEnd = editorState.selStart;
+  drawEditorWave();
+  updateEditorSelection();
+  updateEditorInfo();
+  showToast('Фрагмент вырезан');
+});
+
+// ── Undo ───────────────────────────────────────────────
+document.getElementById('editorUndoBtn')?.addEventListener('click', () => {
+  if (!editorState || editorState.history.length === 0) return;
+  stopEditorPlayback();
+  editorState.buffer = editorState.history.pop();
+  editorState.selStart = 0;
+  editorState.selEnd = editorState.buffer.duration;
+  drawEditorWave();
+  updateEditorSelection();
+  updateEditorInfo();
+});
+
+// ── Reset ──────────────────────────────────────────────
+document.getElementById('editorResetBtn')?.addEventListener('click', () => {
+  if (!editorState) return;
+  stopEditorPlayback();
+  editorState.buffer = editorState.originalBuffer;
+  editorState.history = [];
+  editorState.selStart = 0;
+  editorState.selEnd = editorState.buffer.duration;
+  drawEditorWave();
+  updateEditorSelection();
+  updateEditorInfo();
+});
+
+// ── Playback ───────────────────────────────────────────
+function stopEditorPlayback() {
+  if (!editorState) return;
+  if (editorState.source) {
+    try { editorState.source.stop(); } catch(e) {}
+    editorState.source = null;
+  }
+  if (editorState.animFrame) {
+    cancelAnimationFrame(editorState.animFrame);
+    editorState.animFrame = null;
+  }
+  editorState.isPlaying = false;
+  const ph = document.getElementById('editorPlayhead');
+  if (ph) ph.style.display = 'none';
+  const lbl = document.getElementById('editorPlayLabel');
+  if (lbl) lbl.textContent = 'Прослушать';
+}
+
+function startEditorPlayback(selectionOnly) {
+  if (!editorState) return;
+  stopEditorPlayback();
+  const ctx = editorState.audioCtx;
+  if (ctx.state === 'suspended') ctx.resume();
+  const src = ctx.createBufferSource();
+  src.buffer = editorState.buffer;
+  src.connect(ctx.destination);
+  const from = selectionOnly ? editorState.selStart : 0;
+  const dur = selectionOnly ? Math.max(0.05, editorState.selEnd - editorState.selStart) : undefined;
+  if (selectionOnly) src.start(0, from, dur);
+  else src.start(0, from);
+  editorState.source = src;
+  editorState.isPlaying = true;
+  editorState.playFrom = from;
+  editorState.playStartTime = ctx.currentTime;
+  editorState.playSelectionOnly = selectionOnly;
+  src.onended = () => { if (editorState && editorState.source === src) stopEditorPlayback(); };
+
+  const ph = document.getElementById('editorPlayhead');
+  ph.style.display = 'block';
+  const padLeft = 12;
+  function tick() {
+    if (!editorState || !editorState.isPlaying) return;
+    const elapsed = ctx.currentTime - editorState.playStartTime;
+    const cur = editorState.playFrom + elapsed;
+    const limit = selectionOnly ? editorState.selEnd : editorState.buffer.duration;
+    if (cur >= limit) { stopEditorPlayback(); return; }
+    ph.style.left = (timeToX(cur) + padLeft) + 'px';
+    editorState.animFrame = requestAnimationFrame(tick);
+  }
+  tick();
+  document.getElementById('editorPlayLabel').textContent = 'Стоп';
+}
+
+document.getElementById('editorPlayBtn')?.addEventListener('click', () => {
+  if (!editorState) return;
+  if (editorState.isPlaying) stopEditorPlayback();
+  else startEditorPlayback(false);
+});
+document.getElementById('editorPlaySelBtn')?.addEventListener('click', () => {
+  if (!editorState) return;
+  if (editorState.selEnd - editorState.selStart < 0.05) { showToast('Выделите фрагмент', 'error'); return; }
+  startEditorPlayback(true);
+});
+
+// ── AudioBuffer → WAV blob ─────────────────────────────
+function audioBufferToWav(buffer) {
+  const numCh = buffer.numberOfChannels;
+  const sr = buffer.sampleRate;
+  const len = buffer.length * numCh * 2 + 44;
+  const ab = new ArrayBuffer(len);
+  const view = new DataView(ab);
+  function writeStr(off, s) { for (let i = 0; i < s.length; i++) view.setUint8(off+i, s.charCodeAt(i)); }
+  writeStr(0, 'RIFF');
+  view.setUint32(4, len - 8, true);
+  writeStr(8, 'WAVE');
+  writeStr(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numCh, true);
+  view.setUint32(24, sr, true);
+  view.setUint32(28, sr * numCh * 2, true);
+  view.setUint16(32, numCh * 2, true);
+  view.setUint16(34, 16, true);
+  writeStr(36, 'data');
+  view.setUint32(40, buffer.length * numCh * 2, true);
+  let off = 44;
+  const channels = [];
+  for (let c = 0; c < numCh; c++) channels.push(buffer.getChannelData(c));
+  for (let i = 0; i < buffer.length; i++) {
+    for (let c = 0; c < numCh; c++) {
+      let s = Math.max(-1, Math.min(1, channels[c][i]));
+      view.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      off += 2;
+    }
+  }
+  return new Blob([ab], {type: 'audio/wav'});
+}
+
+// ── Save edited audio ─────────────────────────────────
+document.getElementById('editorSaveBtn')?.addEventListener('click', async () => {
+  if (!editorState) return;
+  stopEditorPlayback();
+  const wavBlob = audioBufferToWav(editorState.buffer);
+  const base64 = await blobToBase64(wavBlob);
+  const recs = loadRecords();
+  const idx = recs.findIndex(r => r.id === editorState.recId);
+  if (idx === -1) { showToast('Запись не найдена', 'error'); return; }
+  recs[idx].audioBase64 = base64;
+  recs[idx].duration = Math.floor(editorState.buffer.duration);
+  recs[idx].edited = true;
+  saveRecords(recs);
+  closeEditor();
+  renderRecordsList();
+  showToast('Изменения сохранены ✓');
+});
+
+document.getElementById('editorCancelBtn')?.addEventListener('click', closeEditor);
+editorModal?.addEventListener('click', e => {
+  if (e.target === editorModal) closeEditor();
+});
+
+function closeEditor() {
+  if (editorState) {
+    stopEditorPlayback();
+    try { editorState.audioCtx.close(); } catch(e) {}
+    editorState = null;
+  }
+  editorModal.classList.remove('open');
+}
+
+window.addEventListener('resize', () => {
+  if (editorState && editorModal.classList.contains('open')) {
+    drawEditorWave();
+    updateEditorSelection();
+  }
 });
 </script>
 </body>
