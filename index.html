@@ -423,6 +423,22 @@ body[data-page="app"] .app-page { display: block; }
 }
 .player-times { display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted); }
 
+/* Action buttons row */
+.record-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(127,234,244,0.08);
+}
+.record-delete {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(220,80,80,0.08); border: 1px solid rgba(220,80,80,0.18);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+.record-delete:hover { background: rgba(220,80,80,0.2); }
+
 /* Transcript on card */
 .record-transcript {
   font-size: 13px;
@@ -1040,123 +1056,160 @@ footer {
 
 /* ─── MOBILE ────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  /* Nav */
-  nav { padding: 0 16px; height: 56px; }
-  .logo { font-size: 15px; gap: 8px; }
-  .logo-icon { width: 28px; height: 28px; }
-  .nav-btn { font-size: 12px; padding: 7px 14px; }
+  /* ── Navigation ── */
+  nav { padding: 0 14px; height: 54px; }
+  .logo { font-size: 14px; gap: 8px; }
+  .logo-icon { width: 26px; height: 26px; }
+  .nav-btn { font-size: 11px; padding: 6px 12px; border-radius: 7px; }
 
-  /* Hero */
-  .hero { padding: 80px 18px 60px; }
-  .hero h1 { font-size: clamp(28px, 8vw, 48px); margin-bottom: 18px; }
-  .hero-desc { font-size: 15px; margin-bottom: 32px; }
-  .hero-cta { gap: 10px; }
-  .btn-primary, .btn-secondary { font-size: 14px; padding: 12px 22px; }
-  .waveform { margin-bottom: 0; }
+  /* ── Hero ── */
+  .hero { padding: 76px 16px 52px; }
+  .hero-badge { font-size: 10px; padding: 5px 12px; margin-bottom: 24px; }
+  .hero h1 { font-size: clamp(26px, 8vw, 44px); margin-bottom: 16px; line-height: 1.12; }
+  .hero-desc { font-size: 14px; margin-bottom: 28px; }
+  .btn-primary, .btn-secondary { font-size: 14px; padding: 12px 20px; width: 100%; text-align: center; }
+  .hero-cta { flex-direction: column; align-items: stretch; gap: 10px; width: 100%; max-width: 320px; }
+  .waveform { margin-bottom: 0; gap: 3px; }
+  .waveform-bar { width: 2px; }
 
-  /* Sections */
-  section { padding: 64px 18px; }
-  .section-title { font-size: clamp(22px, 6vw, 32px); }
-  .features-grid { grid-template-columns: 1fr; gap: 14px; }
-  .feature-card { padding: 22px 18px; }
-  .steps { grid-template-columns: 1fr; gap: 28px; }
-  .recorder-demo { padding: 20px 16px; }
+  /* ── Sections ── */
+  section { padding: 56px 16px; }
+  .section-label { font-size: 10px; }
+  .section-title { font-size: clamp(20px, 6vw, 30px); }
+  .section-sub { font-size: 14px; }
+  .features-grid { grid-template-columns: 1fr; gap: 12px; }
+  .feature-card { padding: 20px 16px; border-radius: 14px; }
+  .card-title { font-size: 14px; }
+  .card-desc { font-size: 13px; }
+  .steps { grid-template-columns: 1fr; gap: 24px; }
+  .recorder-demo { padding: 18px 14px; border-radius: 18px; }
+  .time-display { font-size: 24px; }
 
-  /* CTA section */
-  .cta-inner { padding: 36px 22px; }
-  .cta-inner h2 { font-size: clamp(20px, 6vw, 30px); }
+  /* ── CTA ── */
+  .cta-inner { padding: 32px 18px; border-radius: 20px; }
+  .cta-inner h2 { font-size: clamp(20px, 6vw, 28px); }
+  .cta-inner p { font-size: 14px; }
 
-  /* Footer */
-  footer { flex-direction: column; align-items: center; text-align: center; padding: 28px 20px; gap: 14px; }
-  .footer-links { gap: 18px; flex-wrap: wrap; justify-content: center; }
+  /* ── Footer ── */
+  footer { flex-direction: column; align-items: center; text-align: center; padding: 24px 16px; gap: 12px; }
+  .footer-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .footer-links a { font-size: 12px; }
 
-  /* App page */
-  .app-page { padding: 72px 12px 150px; }
-  .app-topbar { height: 56px; padding: 0 12px; }
-  .app-title { font-size: 16px; }
-  .app-icon-btn { width: 38px; height: 38px; border-radius: 10px; }
-  .app-tabs { gap: 18px; margin-bottom: 10px; }
-  .app-tab { font-size: 11px; letter-spacing: 0.03em; }
+  /* ── App page ── */
+  .app-page {
+    padding: calc(62px + env(safe-area-inset-top)) 12px calc(148px + env(safe-area-inset-bottom));
+  }
+  .app-topbar {
+    height: calc(54px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 12px 0;
+  }
+  .app-title { font-size: 15px; }
+  .app-icon-btn { width: 36px; height: 36px; border-radius: 10px; }
+  .app-icon-btn svg { width: 16px; height: 16px; }
+  .app-tabs { gap: 16px; margin-bottom: 10px; }
+  .app-tab { font-size: 11px; letter-spacing: 0.02em; padding: 5px 0; }
 
-  /* Record cards */
-  .record-card { padding: 12px; gap: 8px; border-radius: 12px; }
+  /* ── Record cards ── */
+  .records-list { gap: 10px; }
+  .record-card { padding: 12px 12px 10px; gap: 0; border-radius: 12px; }
+  .record-top { align-items: flex-start; gap: 8px; margin-bottom: 8px; }
   .record-title { font-size: 13px; }
-  .record-right { gap: 7px; }
-  .record-play,
+  .record-sub { font-size: 11px; gap: 7px; margin-top: 3px; }
+  .record-right { gap: 6px; flex-shrink: 0; }
+  .record-duration { font-size: 12px; }
+  .record-play { width: 32px; height: 32px; }
+  .record-play svg { width: 12px; height: 12px; }
+  .record-star { width: 26px; height: 26px; font-size: 19px; }
+  .record-select-circle { width: 22px; height: 22px; }
+
+  /* ── Action row: bigger tap targets, evenly spread ── */
+  .record-actions {
+    gap: 6px;
+    padding-top: 9px;
+    justify-content: flex-start;
+  }
   .record-edit-btn,
   .record-eq-btn,
   .record-folder-btn,
-  .record-delete { width: 30px; height: 30px; }
-  .record-play svg { width: 12px; height: 12px; }
-  .record-duration { font-size: 12px; }
-  .record-sub { font-size: 11px; gap: 8px; }
-  .record-transcript { font-size: 12px; }
+  .record-delete { width: 36px; height: 36px; }
+  .record-edit-btn svg,
+  .record-folder-btn svg { width: 14px; height: 14px; }
 
-  /* FABs */
+  /* ── Transcript ── */
+  .record-transcript { font-size: 12px; line-height: 1.55; margin-top: 8px; padding-top: 8px; }
+  .transcript-engine-badge { font-size: 9px; padding: 2px 6px; }
+
+  /* ── Player ── */
+  .record-player { padding-top: 8px; gap: 6px; margin-top: 8px; }
+  .player-progress { height: 5px; }
+  .player-progress::-webkit-slider-thumb { width: 18px; height: 18px; }
+  .player-times { font-size: 10px; }
+
+  /* ── FABs ── */
   .app-fab-mic,
-  .app-fab-trash { width: 72px; height: 72px; bottom: 90px; }
-  .app-fab-mic svg,
-  .app-fab-trash svg { width: 26px; height: 26px; }
-  .app-bottom-actions { bottom: 16px; left: 12px; right: 12px; }
-  .app-bottom-actions .app-icon-btn { width: 42px; height: 42px; }
+  .app-fab-trash {
+    width: 68px; height: 68px;
+    bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  .app-fab-mic svg, .app-fab-trash svg { width: 26px; height: 26px; }
+  .app-bottom-actions {
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    left: 10px; right: 10px;
+  }
+  .app-bottom-actions .app-icon-btn { width: 40px; height: 40px; }
 
-  /* Folder card */
-  .folder-card { padding: 12px 14px; }
+  /* ── Folder cards ── */
+  .folder-card { padding: 11px 12px; border-radius: 12px; }
+  .folder-icon-emoji { font-size: 22px; }
   .folder-name { font-size: 13px; }
+  .folder-count { font-size: 11px; }
+  .folder-delete-btn { width: 28px; height: 28px; }
 
-  /* Modals */
-  .modal-overlay { padding: 12px; }
-  .modal-box { border-radius: 16px; padding: 22px 18px; }
-  .modal-title { font-size: 15px; margin-bottom: 16px; }
-  .modal-btn { padding: 11px; font-size: 13px; }
+  /* ── Trash tab ── */
+  .trash-btn { font-size: 11px; padding: 7px 10px; }
+
+  /* ── Modals ── */
+  .modal-overlay { padding: 10px; align-items: flex-end; }
+  .modal-box {
+    border-radius: 20px 20px 14px 14px;
+    padding: 20px 16px 24px;
+    max-height: 92dvh;
+    overflow-y: auto;
+  }
+  .modal-title { font-size: 14px; margin-bottom: 14px; }
+  .modal-btn { padding: 12px; font-size: 13px; border-radius: 10px; }
+  .transcription-method { padding: 9px 10px; }
   .transcription-method-name { font-size: 12px; }
+  .transcription-method-desc { font-size: 10px; }
 
-  /* Recording fullscreen */
-  .rec2-topbar { padding: 16px 14px 8px; }
-  .rec2-rec-name { font-size: 14px; max-width: 140px; }
-  .rec2-timer { font-size: 38px; padding: 8px 16px 2px; }
-  .rec2-wave-wrap { margin: 8px 12px 4px; }
-  .rec2-transcript { margin: 0 12px 6px; font-size: 14px; padding: 12px 14px; }
-  .rec2-bottom { gap: 20px; padding: 10px 16px 28px; }
-  .rec2-main-btn { width: 68px; height: 68px; }
+  /* ── Recording fullscreen ── */
+  .rec2-topbar { padding: calc(14px + env(safe-area-inset-top)) 14px 6px; }
+  .rec2-rec-name { font-size: 13px; max-width: 130px; }
+  .rec2-wave-wrap { margin: 6px 10px 4px; }
+  .rec2-timer { font-size: 36px; padding: 6px 16px 0; letter-spacing: 0.02em; }
+  .rec2-status { font-size: 10px; margin-bottom: 6px; }
+  .rec2-transcript { margin: 0 10px 6px; font-size: 14px; padding: 10px 12px; min-height: 60px; }
+  .rec2-finish-btn { padding: 7px 22px; font-size: 13px; margin-bottom: 2px; }
+  .rec2-bottom { gap: 18px; padding: calc(8px) 14px calc(24px + env(safe-area-inset-bottom)); }
+  .rec2-main-btn { width: 66px; height: 66px; }
   .rec2-main-btn svg { width: 24px; height: 24px; }
   .rec2-side-btn { width: 44px; height: 44px; }
   .rec2-side-btn svg { width: 18px; height: 18px; }
-  .rec2-finish-btn { padding: 8px 24px; font-size: 13px; }
 
-  /* Audio editor */
-  .editor-modal-box { width: calc(100% - 24px); }
-  #editorCanvas { height: 110px; }
-  .editor-controls { gap: 8px; }
-  .editor-ctrl-btn { padding: 8px 12px; font-size: 12px; }
-  .editor-info { font-size: 11px; }
+  /* ── Audio editor ── */
+  .editor-modal-box { width: calc(100% - 20px); }
+  #editorCanvas { height: 100px; }
+  .editor-controls { gap: 7px; }
+  .editor-ctrl-btn { padding: 8px 10px; font-size: 11px; gap: 4px; }
+  .editor-ctrl-btn svg { width: 12px; height: 12px; }
+  .editor-info { font-size: 10px; gap: 4px; }
 
-  /* Search */
+  /* ── Search ── */
   .search-bar.open { max-height: 50px; }
-  .search-input { font-size: 14px; }
+  .search-input { font-size: 15px; }
 
-  /* Trash */
-  .trash-btn { font-size: 11px; padding: 7px 8px; }
-
-  /* Record top — wrap buttons to next row on tiny screens */
-  .record-top { flex-wrap: wrap; }
-  .record-left { flex: 1; min-width: 0; }
-  .record-right { flex-wrap: wrap; gap: 6px; width: 100%; justify-content: flex-end; }
-  .record-duration { display: none; } /* already in sub-row */
-
-  /* Bigger touch targets for interactive elements */
-  .record-star { width: 28px; height: 28px; font-size: 20px; }
-  .record-select-circle { width: 24px; height: 24px; }
-
-  /* Safe area insets (iPhone notch / home bar) */
-  .app-topbar { padding-top: env(safe-area-inset-top); height: calc(56px + env(safe-area-inset-top)); }
-  .app-page { padding-top: calc(72px + env(safe-area-inset-top)); padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
-  .app-fab-mic, .app-fab-trash { bottom: calc(90px + env(safe-area-inset-bottom)); }
-  .app-bottom-actions { bottom: calc(16px + env(safe-area-inset-bottom)); }
-
-  /* Player progress bigger touch target */
-  .player-progress { height: 6px; }
-  .player-progress::-webkit-slider-thumb { width: 18px; height: 18px; }
+  /* ── Auth pages ── */
+  .signup-page, .login-page { padding: 80px 16px 40px; }
 }
 </style>
 </head>
@@ -2104,6 +2157,7 @@ function renderTrashTab() {
     return;
   }
   trash.forEach(rec => {
+    const hasTranscript = !!(rec.transcript && rec.transcript.trim());
     const card = document.createElement('div');
     card.className = 'record-card';
     card.style.opacity = '0.82';
@@ -2123,6 +2177,11 @@ function renderTrashTab() {
           ${rec.duration ? `<span class="record-duration">${formatDuration(rec.duration)}</span>` : ''}
         </div>
       </div>
+      ${hasTranscript ? `
+      <div class="record-transcript">
+        <div class="transcript-engine-badge">${methodLabel(rec.transcMethod)}</div>
+        ${escHtml(rec.transcript)}
+      </div>` : ''}
       <div class="trash-actions">
         <button class="trash-btn restore">↩ Восстановить</button>
         <button class="trash-btn del-perm">✕ Удалить навсегда</button>
@@ -2254,15 +2313,17 @@ function createRecordCard(rec, idx) {
       <div class="record-right">
         ${rec.duration ? `<span class="record-duration">${formatDuration(rec.duration)}</span>` : ''}
         ${hasAudio ? `<button class="record-play" aria-label="Воспроизвести"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>` : ''}
-        ${hasAudio ? `<button class="record-edit-btn" aria-label="Редактировать" title="Редактировать запись"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></button>` : ''}
-        ${hasTranscript ? `<button class="record-eq-btn" aria-label="Транскрипт" title="Показать/скрыть транскрипт"><span class="eq-btn-icon-a" style="font-family:'Onest',sans-serif;font-size:15px;font-weight:600;color:rgba(127,234,244,0.75);line-height:1;display:none;">A</span><svg class="eq-btn-icon-bars" viewBox="0 0 20 16" xmlns="http://www.w3.org/2000/svg"><rect class="eq-bar" x="0" y="4" width="3" height="8" rx="1.5"/><rect class="eq-bar" x="4.25" y="0" width="3" height="16" rx="1.5"/><rect class="eq-bar" x="8.5" y="5" width="3" height="6" rx="1.5"/><rect class="eq-bar" x="12.75" y="2" width="3" height="12" rx="1.5"/><rect class="eq-bar" x="17" y="6" width="3" height="4" rx="1.5"/></svg></button>` : ''}
-        <button class="record-folder-btn${rec.folderId ? ' in-folder' : ''}" aria-label="Папка" title="Переместить в папку">
-          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-        </button>
-        <button class="record-delete" aria-label="В корзину" title="Переместить в корзину" style="width:34px;height:34px;border-radius:50%;background:rgba(220,80,80,0.08);border:1px solid rgba(220,80,80,0.18);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f47b7b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        </button>
       </div>
+    </div>
+    <div class="record-actions">
+      ${hasAudio ? `<button class="record-edit-btn" aria-label="Редактировать" title="Редактировать запись"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></button>` : ''}
+      ${hasTranscript ? `<button class="record-eq-btn" aria-label="Транскрипт" title="Показать/скрыть транскрипт"><span class="eq-btn-icon-a" style="font-family:'Onest',sans-serif;font-size:15px;font-weight:600;color:rgba(127,234,244,0.75);line-height:1;display:none;">A</span><svg class="eq-btn-icon-bars" viewBox="0 0 20 16" xmlns="http://www.w3.org/2000/svg"><rect class="eq-bar" x="0" y="4" width="3" height="8" rx="1.5"/><rect class="eq-bar" x="4.25" y="0" width="3" height="16" rx="1.5"/><rect class="eq-bar" x="8.5" y="5" width="3" height="6" rx="1.5"/><rect class="eq-bar" x="12.75" y="2" width="3" height="12" rx="1.5"/><rect class="eq-bar" x="17" y="6" width="3" height="4" rx="1.5"/></svg></button>` : ''}
+      <button class="record-folder-btn${rec.folderId ? ' in-folder' : ''}" aria-label="Папка" title="Переместить в папку">
+        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="record-delete" aria-label="В корзину" title="Переместить в корзину">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f47b7b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </button>
     </div>
     ${hasAudio ? `
     <div class="record-player">
